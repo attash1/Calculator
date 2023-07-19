@@ -101,21 +101,3 @@ const deleteButtonObj = document.querySelector('.delete');
 deleteButtonObj.addEventListener('click', () =>
 displayObj.textContent = displayObj.textContent.slice(0, displayObj.textContent.length-1)
 );
-
-
-
-
-
-//next two functions handle changing color of buttons on mouseover/out
-
-buttons.forEach(button => button.addEventListener('mouseover', (e) => 
-    e.target.style.cssText = 'background-color:rgb(179, 178, 177);'
-));
-
-buttons.forEach(button => button.addEventListener('mouseout', (e) => 
-    e.target.style.cssText = 'background-color:white;'
-));
-
-
-
-

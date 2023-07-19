@@ -50,10 +50,16 @@
     flex: 1;
     margin-right: 3%;
     border-radius: 10px;
-    border-bottom: 3px solid gray;
+    border: 2px solid lightgray;
+    border-bottom: 2px solid gray;
     cursor: pointer;
 
 }
+
+.button:active {
+    border: 2px solid gray;
+}
+
 
 .row {
     display: flex;
