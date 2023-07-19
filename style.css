@@ -16,7 +16,7 @@
     margin: auto;
     margin-top: 4%;
     border-radius: 10px;
-    border: 2px solid darkgray;
+   
     
 
     display: flex;
@@ -50,7 +50,9 @@
     flex: 1;
     margin-right: 3%;
     border-radius: 10px;
-    border: 2px solid gray;
+    border-bottom: 3px solid gray;
+    cursor: pointer;
+
 }
 
 .row {

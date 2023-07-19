@@ -1,59 +1,89 @@
 const expressionObj = document.querySelector('.expression');
 const displayObj = document.querySelector('.display');
+const numButtons = document.querySelectorAll('.numButton');
+const operationButtons = document.querySelectorAll('.op');
 const buttons = document.querySelectorAll('.button');
+const equalButton = document.querySelector('.equalButton');
+const negativeButton = document.querySelector('.negative');
+const decimalButton = document.querySelector('.decimalButton');
 
+let inputNumber1 = 0;
+let operation = "";
+let inputNumber2 = 0;
 
-let number1 = '';
-let operation = '';
-let number2 = '';
+numButtons.forEach(button => button.addEventListener('click', numInputHandler));
+operationButtons.forEach(button => button.addEventListener('click', opInputHandler));
+equalButton.addEventListener('click', equalHandler);
+negativeButton.addEventListener('click', negativeToggle);
+decimalButton.addEventListener('click', addDecimal);
 
-
-
-function operate(stringNum1, opSymbol, stringNum2) {
-    let num1 = Number(stringNum1);
-    let num2 = Number(stringNum2);
+function operate(num1, opSymbol, num2) {
+    let result = 0;
     if (opSymbol == '+')
-        return num1 + num2;
+        result = num1 + num2;
     else if (opSymbol == '-')
-        return num1 - num2;
+        result = num1 - num2;
     else if (opSymbol == '*')
-        return num1 * num2;
-    else if (opSymbol == '/')
-        return num1 / num2;
+        result = num1 * num2;
+    else if (opSymbol == '÷')
+        result = num1 / num2;
     else if (opSymbol == '^')
-        return Math.pow(num1, num2);
-    else 
+        result = Math.pow(num1, num2);
+    else { 
         return "Unrecognized operation symbol";
-}
-
-function negative() {
-
-}
-
-function inputHandling(e) {     //Probably don't use inputHandling
-/*
-    else if (e.target.textContent == '+/-') {
-        //FILL IN
-    }
-    else if (e.target.textContent == '.'){
-        //DECIMAL STUFF
     }
 
-    else if (!isNaN(Number(e.target.textContent))) { //if pressed key is a number
-        displayObj.textContent = e.target.textContent;
+    return Math.round(result * 100) / 100;
+}
+
+
+
+
+function numInputHandler(e) {     
+    displayObj.textContent = displayObj.textContent.concat(e.target.textContent);
+}
+
+function opInputHandler(e) {
+    if (operation == "") {                          //if expression is incomplete
+        inputNumber1 = Number(displayObj.textContent);
+        operation = e.target.textContent;
     }
-    */
-    
+    else {                                          //if expression is long, evaluate first two numbers first
+        inputNumber2 = Number(displayObj.textContent);
+        inputNumber1 = operate(inputNumber1, operation, inputNumber2);
+        inputNumber2 = 0;
+        operation = e.target.textContent;
+
+    }
+    expressionObj.textContent = `${inputNumber1} ${operation}`;
+    displayObj.textContent = "";
+}
+function equalHandler(e) {
+
+    if (operation != "") {
+        inputNumber2 = Number(displayObj.textContent);
+        let result = operate(inputNumber1, operation, inputNumber2)
+
+        expressionObj.textContent = `${inputNumber1} ${operation} ${inputNumber2}`;
+        displayObj.textContent = result;
+
+        inputNumber1 = result;
+        inputNumber2 = 0;
+        operation = "";
+    }
 }
 
-function updateExpression(newExpr) {
-    expressionObj.textContent = newExpr;
-}
-function updateDisplay(newDisplay) {
-    displayObj.textContent = newDisplay;
+function negativeToggle() {
+    let curNumOnScreen = Number(displayObj.textContent);
+    curNumOnScreen *= -1;
+    displayObj.textContent = curNumOnScreen;
 }
 
-
+function addDecimal() {
+    if (!displayObj.textContent.includes(".")) {
+        displayObj.textContent = displayObj.textContent.concat(".");
+    }
+}
 
 
 const clearButtonObj = document.querySelector('.clear');
@@ -62,8 +92,9 @@ clearButtonObj.addEventListener('click', clearDisplay);
 function clearDisplay() {
     displayObj.textContent = "";
     expressionObj.textContent = "";
-    number1 = "";
+    inputNumber1 = 0;
     operation = "";
+    inputNumber2 = 0;
 }
 
 const deleteButtonObj = document.querySelector('.delete');
@@ -72,7 +103,7 @@ displayObj.textContent = displayObj.textContent.slice(0, displayObj.textContent.
 );
 
 
-buttons.forEach(button => button.addEventListener('click', inputHandling));
+
 
 
 //next two functions handle changing color of buttons on mouseover/out
